@@ -1,0 +1,50 @@
+﻿<div class="container">
+    <div class="row">
+        <h1 class="game-header">Connect4 Game</h1>
+    </div>
+
+    <div class="row">
+        <button class="btn-danger btn-lg" ng-click="startNewGame()">New Game</button>
+        <button class="btn-primary btn-sm" ng-click="undoLastMove()">Undo</button>
+        <button class="btn-success btn-sm" ng-click="replayGame()">Replay</button>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <h3>Player1</h3>
+            <div class="circleBase circle-red-small"></div>
+        </div>
+        <div class="col-md-3">
+            <h3>Player2</h3>
+            <div class="circleBase circle-yellow-small"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="row">
+            <div class="col-xs-9">
+                <div class="bottom-buffer">
+                    <div class="clearfix area-width">
+                        <div class="cursor-area" ng-mouseover="moveCursor(cursor)" ng-click="dropDiscToZone(cursor)" ng-repeat="cursor in gameCursor">
+                            <div style="vertical-align: middle">
+                                <div class="circleBase circle-red" ng-if="cursor.player === playerType.One"></div>
+                                <div class="circleBase circle-yellow" ng-if="cursor.player === playerType.Two"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="clearfix area-width" ng-repeat="row in gameZone">
+                        <div ng-repeat="cell in row" class="box-cell">
+                            <div>
+                                <div class="circleBase circle-red" ng-if="cell.player === playerType.One"></div>
+                                <div class="circleBase circle-yellow" ng-if="cell.player === playerType.Two"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
