@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-app.controller('gameCtrl', ['$scope', function ($scope) {
+app.controller('gameCtrl', ['$scope', 'gameLogic', function ($scope, gameLogic) {
     console.log('gameCtrl is running...');
 
     $scope.totalRows = 6;
@@ -105,6 +105,9 @@ app.controller('gameCtrl', ['$scope', function ($scope) {
             $scope.movesStorage.push($scope.lastMove);
             
             checkForWin();
+
+            sendEventToAllPeers(cursor);
+
         }
     };
 
@@ -141,7 +144,32 @@ app.controller('gameCtrl', ['$scope', function ($scope) {
         $scope.currentPlayer = $scope.playerType.One;
         buildGameZone();
         loadGameCursor(0);
-    };    
+    };
+
+
+    $scope.replayGame = function () {
+        buildGameZone();
+        loadGameCursor(0);
+        
+        if (!moves || moves.length === 0) {
+            return;
+        }
+        var i = 0;
+        function drawMovesForReplay() {
+            setTimeout(function () {
+                var move = moves[i];
+                $scope.gameZone[move.rowIndex][move.columnIndex].player = move.player;
+                $scope.$digest();
+
+                i++;
+                if (i < moves.length) {
+                    drawMovesForReplay();
+                }
+            }, 1000);
+        }
+        drawMovesForReplay();
+    };
+
 
     var getNextPlayer = function () {
         if ($scope.currentPlayer === $scope.playerType.One) {
