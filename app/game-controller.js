@@ -3,8 +3,7 @@
 app.controller('gameCtrl', ['$scope', function ($scope) {
     console.log('gameCtrl is running...');
 
-
-$scope.totalRows = 6;
+    $scope.totalRows = 6;
     $scope.totalColumns = 7;
     $scope.gameZone = [];
     $scope.currentRow = undefined;
@@ -59,8 +58,7 @@ $scope.totalRows = 6;
 
     buildGameZone();
 
-
-$scope.moveCursor = function (cursor) {
+    $scope.moveCursor = function (cursor) {
         if ($scope.lastCursor.columnIndex == cursor.columnIndex) {
             return;
         }
@@ -69,6 +67,88 @@ $scope.moveCursor = function (cursor) {
     };
 
 
+    function availableColumns() {
+        var movesArray = new Array();
+        for (var i = 0; i < $scope.totalColumns; i++) {
+            if ($scope.gameZone[0][i].player === 0) {
+                movesArray.push(i);
+            }
+        }
+        return movesArray;
+    }
+
+
+    function availableFirstRow(col, player) {
+        for (var i = 0; i < $scope.totalRows; i++) {
+            if ($scope.gameZone[i][col].player !== 0) {
+                break;
+            }
+        }
+        return i - 1;
+    }
+
+    function moveAndPlaceDisk() {
+        $scope.currentRow = availableFirstRow($scope.currentColumn, $scope.currentPlayer);
+        $scope.gameZone[$scope.currentRow][$scope.currentColumn] = new gameZoneCell($scope.currentPlayer, $scope.currentRow, $scope.currentColumn);
+    }
+
+    $scope.movesStorage = [];
+
+    $scope.peerMove = false;
+
+    $scope.dropDiscToZone = function (cursor) {
+
+        if (availableColumns().indexOf(cursor.columnIndex) != -1) {
+            $scope.currentColumn = cursor.columnIndex;
+            moveAndPlaceDisk();
+            $scope.lastMove = new gameZoneCell($scope.currentPlayer, $scope.currentRow, $scope.currentColumn);
+            $scope.movesStorage.push($scope.lastMove);
+            
+            checkForWin();
+        }
+    };
+
+
+    var checkForWin = function() {
+        if (gameLogic.checkWin($scope)) {
+            var winPlayer = $scope.currentPlayer;
+            
+            setTimeout(function () {
+                alert("Player " + winPlayer + " Wins");
+                buildGameZone();
+                loadGameCursor(0);                
+                $scope.$digest();
+            }, 300);
+        } else {
+            toggleCursorOfPlayer();
+        }
+    }
+
+
+
+    $scope.undoLastMove = function () {
+        if ($scope.lastMove) {
+            $scope.gameZone[$scope.lastMove.rowIndex][$scope.lastMove.columnIndex].player = $scope.playerType.None;
+            $scope.movesStorage.pop();
+            $scope.lastMove = undefined;
+            toggleCursorOfPlayer();
+        }
+    };
+
+
+    $scope.startNewGame = function () {
+        $scope.movesStorage = [];
+        $scope.currentPlayer = $scope.playerType.One;
+        buildGameZone();
+        loadGameCursor(0);
+    };    
+
+    var getNextPlayer = function () {
+        if ($scope.currentPlayer === $scope.playerType.One) {
+            return $scope.playerType.Two;
+        }
+        return $scope.playerType.One;
+    };
 
 
 }]);
