@@ -60,5 +60,16 @@ $scope.totalRows = 6;
     buildGameZone();
 
 
+$scope.moveCursor = function (cursor) {
+        if ($scope.lastCursor.columnIndex == cursor.columnIndex) {
+            return;
+        }
+        loadGameCursor(cursor.columnIndex);
+        $scope.lastCursor = cursor;
+    };
+
+
+
+
 }]);
 
