@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-app.controller('gameCtrl', ['$scope', 'gameLogic', function ($scope, gameLogic) {
+app.controller('gameCtrl', ['$scope', 'connectFourDataContext', 'gameLogic', function ($scope, connectFourDataContext, gameLogic) {
     console.log('gameCtrl is running...');
 
     $scope.totalRows = 6;
@@ -119,7 +119,8 @@ app.controller('gameCtrl', ['$scope', 'gameLogic', function ($scope, gameLogic) 
             setTimeout(function () {
                 alert("Player " + winPlayer + " Wins");
                 buildGameZone();
-                loadGameCursor(0);                
+                loadGameCursor(0);
+                connectFourDataContext.postMoves($scope.movesStorage);
                 $scope.$digest();
             }, 300);
         } else {
@@ -150,7 +151,8 @@ app.controller('gameCtrl', ['$scope', 'gameLogic', function ($scope, gameLogic) 
     $scope.replayGame = function () {
         buildGameZone();
         loadGameCursor(0);
-        
+
+        var moves = connectFourDataContext.getLastGame();
         if (!moves || moves.length === 0) {
             return;
         }
