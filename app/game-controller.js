@@ -1,5 +1,9 @@
 ﻿"use strict";
 
+var PEER_JS_API_KEY;
+
+PEER_JS_API_KEY = 'ft8poufp4eut0529';
+
 app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext', 'gameLogic', function ($scope,$firebaseArray, connectFourDataContext, gameLogic) {
     console.log('gameCtrl is running...');
 
@@ -103,7 +107,7 @@ app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext',
             moveAndPlaceDisk();
             $scope.lastMove = new gameZoneCell($scope.currentPlayer, $scope.currentRow, $scope.currentColumn);
             $scope.movesStorage.push($scope.lastMove);
-                        
+                                                                                                                                                                                    
             checkForWin();
         }
     };
@@ -185,10 +189,44 @@ app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext',
 
     $scope.peerConnections = {};
     $scope.connectedUsers = {};
-       
-    
+
+    $scope.channelData = {
+        cursor: $scope.gameCursor,
+        gameArea : $scope.gameZone
+    }
+
+
+    $scope.peer = new Peer($scope.myId, {
+        key: PEER_JS_API_KEY,
+        debug: 0
+    });
+
+
     var ref = new Firebase("https://c4.firebaseio.com/c4peer");
     $scope.connectedUsers = $firebaseArray(ref);
+
+
+
+    $scope.peer.on('open', function (id) {
+
+        $scope.connectedUsers.$add({ peerId: id });
+
+        return $scope.$apply(function () {
+            $scope.peerConnections[id] = id;
+        });
+    });
+
+    $scope.peer.on('connection', function (conn) {
+
+        return $scope.$apply(function () {
+            setupPeerConnection(conn);
+        });
+    });
+
+
+    $scope.peer.on('error', function (err) {
+        //console.log(err);
+    });
                                     
 
 
