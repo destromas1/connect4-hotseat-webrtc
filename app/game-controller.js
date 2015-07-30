@@ -228,7 +228,33 @@ app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext',
         //console.log(err);
     });
                                     
+    var setupPeerConnection = function (c) {
 
+        if (c.label === 'c4') {
+
+            c.on('data', function (data) {
+                $scope.$apply(function () {
+                    console.log(data);
+                    var cursor = JSON.parse(data);
+                    if (availableColumns().indexOf(cursor.columnIndex) != -1) {
+                        $scope.currentColumn = cursor.columnIndex;
+                        moveAndPlaceDisk();
+                        $scope.lastMove = new gameZoneCell($scope.currentPlayer, $scope.currentRow, $scope.currentColumn);
+                        $scope.movesStorage.push($scope.lastMove);
+
+                        checkForWin();
+                    }
+                    
+                });
+            });
+
+            c.on('close', function () {
+                console.log(c.peer + ' has left the chat.');
+
+                delete $scope.peerConnections[c.peer];
+            });
+        }
+    };
 
 }]);
 
