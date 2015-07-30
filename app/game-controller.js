@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-app.controller('gameCtrl', ['$scope', 'connectFourDataContext', 'gameLogic', function ($scope, connectFourDataContext, gameLogic) {
+app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext', 'gameLogic', function ($scope,$firebaseArray, connectFourDataContext, gameLogic) {
     console.log('gameCtrl is running...');
 
     $scope.totalRows = 6;
@@ -103,11 +103,8 @@ app.controller('gameCtrl', ['$scope', 'connectFourDataContext', 'gameLogic', fun
             moveAndPlaceDisk();
             $scope.lastMove = new gameZoneCell($scope.currentPlayer, $scope.currentRow, $scope.currentColumn);
             $scope.movesStorage.push($scope.lastMove);
-            
+                        
             checkForWin();
-
-            sendEventToAllPeers(cursor);
-
         }
     };
 
@@ -179,6 +176,20 @@ app.controller('gameCtrl', ['$scope', 'connectFourDataContext', 'gameLogic', fun
         }
         return $scope.playerType.One;
     };
+
+
+    /////////////////// Peer Gaming Implementation
+
+
+    $scope.myId = +(new Date);
+
+    $scope.peerConnections = {};
+    $scope.connectedUsers = {};
+       
+    
+    var ref = new Firebase("https://c4.firebaseio.com/c4peer");
+    $scope.connectedUsers = $firebaseArray(ref);
+                                    
 
 
 }]);
