@@ -1,0 +1,76 @@
+﻿.circleBase {
+    border-radius: 50%;
+    behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+}
+
+.circle-red {
+    width: 50px;
+    height: 50px;
+    background: red;
+    border: 3px solid red;
+    margin: auto;
+}
+
+.circle-yellow {
+    width: 50px;
+    height: 50px;
+    background: yellow;
+    border: 3px solid yellow;
+    margin: auto;
+}
+
+
+.circle-red-small {
+    width: 35px;
+    height: 35px;
+    background: red;
+    border: 3px solid red;
+}
+
+.circle-yellow-small {
+     width: 35px;
+    height: 35px;
+    background: yellow;
+    border: 3px solid yellow;
+}
+
+.table tr td {
+    height: 75px;
+}
+
+.game-header {
+    color: red;
+    font-family: Verdana;
+    font-size: 3em;
+    background-color: lavender;
+    box-shadow: 5px 5px 5px blueviolet;
+    display: inline-block;
+}
+
+
+.cursor-area {
+    
+    width: 70px;
+    height: 70px;
+    padding-top: 45px;
+    border: none;
+    float: left;
+}
+
+.bottom-buffer {
+     margin-bottom: 30px;
+}
+
+.area-width {
+    width: 490px;
+}
+
+.box-cell {
+    border: 1px solid #333333;
+    float: left;
+    width: 70px;
+    height: 70px;
+    box-sizing: border-box;
+    padding-top: 15px;
+}
+
