@@ -109,7 +109,9 @@ app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext',
             $scope.movesStorage.push($scope.lastMove);
             
             checkForWin();
-                        
+
+            sendEventToAllPeers(cursor);
+
         }
     };
 
@@ -226,7 +228,6 @@ app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext',
 
 
     $scope.peer.on('error', function (err) {
-        //console.log(err);
     });
 
     var connectToAllPeers = function (gamers) {
@@ -240,19 +241,14 @@ app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext',
                     c.on('open', function () {
                         setupPeerConnection(c);
                         c.on('error', function (err) {
-                            //console.log(err);
                         });
                     });
                 }
             }
         }
-
     };
 
-
-
     $scope.connectedUsers.$loaded(function (gamers) {
-        //console.log(gamers);
         connectToAllPeers(gamers);
     });
 
@@ -260,33 +256,27 @@ app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext',
         connectToAllPeers($scope.connectedUsers);
     });
 
-    var setupPeerConnection = function (c) {
+    var setupPeerConnection = function(c) {
 
-        if (c.label === 'c4') {
+        c.on('data', function(data) {
+            $scope.$apply(function() {
+                var cursor = JSON.parse(data);
+                if (availableColumns().indexOf(cursor.columnIndex) != -1) {
+                    $scope.currentColumn = cursor.columnIndex;
+                    moveAndPlaceDisk();
+                    $scope.lastMove = new gameZoneCell($scope.currentPlayer, $scope.currentRow, $scope.currentColumn);
+                    $scope.movesStorage.push($scope.lastMove);
 
-            c.on('data', function (data) {
-                $scope.$apply(function () {
-                    console.log(data);
-                    var cursor = JSON.parse(data);
-                    if (availableColumns().indexOf(cursor.columnIndex) != -1) {
-                        $scope.currentColumn = cursor.columnIndex;
-                        moveAndPlaceDisk();
-                        $scope.lastMove = new gameZoneCell($scope.currentPlayer, $scope.currentRow, $scope.currentColumn);
-                        $scope.movesStorage.push($scope.lastMove);
-
-                        checkForWin();
-                    }
-                    
-                });
+                    checkForWin();
+                }
             });
+        });
 
-            c.on('close', function () {
-                console.log(c.peer + ' has left the chat.');
-
-                delete $scope.peerConnections[c.peer];
-            });
-        }
-    };
+        c.on('close', function() {
+            console.log(c.peer + ' left');
+            delete $scope.peerConnections[c.peer];
+        });
+    }
 
 
     $scope.peer.on('close', function () {
@@ -294,11 +284,23 @@ app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext',
             return delete $scope.peerConnections[$scope.peer.id];
         });
     });
+
     
+    var sendEventToAllPeers = function (cursor) {
+
+        var data = JSON.stringify(cursor);
+
+        for (var peerConn in $scope.peer.connections) {
+            var conns = $scope.peer.connections[peerConn];
+            var c = conns[0];
+
+            c.send(data);
+        }
+    };
+
     window.onunload = window.onbeforeunload = function () {
         return $scope.peer.destroy();
     };
 
-
-
 }]);
+
