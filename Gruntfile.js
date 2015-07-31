@@ -12,8 +12,14 @@ module.exports = function (grunt) {
             }
         },
 
-        
-      watch: {
+        karma: {
+            unit: {
+                configFile: 'karma.conf.js',
+                singleRun: false
+            }
+        },
+
+        watch: {
             grunt: { files: ['Gruntfile.js'] },
 
             livereload: {
@@ -26,6 +32,7 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-connect');
-    
+    grunt.loadNpmTasks('grunt-karma');
+
     grunt.registerTask('default', ['connect', 'watch']);
 };
