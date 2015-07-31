@@ -107,8 +107,9 @@ app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext',
             moveAndPlaceDisk();
             $scope.lastMove = new gameZoneCell($scope.currentPlayer, $scope.currentRow, $scope.currentColumn);
             $scope.movesStorage.push($scope.lastMove);
-                                                                                                                                                                                    
+            
             checkForWin();
+                        
         }
     };
 
@@ -227,7 +228,38 @@ app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext',
     $scope.peer.on('error', function (err) {
         //console.log(err);
     });
-                                    
+
+    var connectToAllPeers = function (gamers) {
+        for (var i = 0; i < gamers.length; i++) {
+            var gamer = gamers[i];
+            if (gamer.peerId != $scope.myId) {
+                var conns = $scope.peer.connections[gamer.peerId];
+                if (!conns || conns.length < 1) {
+                    var c = $scope.peer.connect(gamer.peerId, { label: 'c4', reliable: true });
+                    $scope.peerConnections[gamer.peerId] = gamer.peerId;
+                    c.on('open', function () {
+                        setupPeerConnection(c);
+                        c.on('error', function (err) {
+                            //console.log(err);
+                        });
+                    });
+                }
+            }
+        }
+
+    };
+
+
+
+    $scope.connectedUsers.$loaded(function (gamers) {
+        //console.log(gamers);
+        connectToAllPeers(gamers);
+    });
+
+    $scope.connectedUsers.$watch(function (newList, oldList) {
+        connectToAllPeers($scope.connectedUsers);
+    });
+
     var setupPeerConnection = function (c) {
 
         if (c.label === 'c4') {
@@ -256,5 +288,17 @@ app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext',
         }
     };
 
-}]);
 
+    $scope.peer.on('close', function () {
+        return $scope.$apply(function () {
+            return delete $scope.peerConnections[$scope.peer.id];
+        });
+    });
+    
+    window.onunload = window.onbeforeunload = function () {
+        return $scope.peer.destroy();
+    };
+
+
+
+}]);
