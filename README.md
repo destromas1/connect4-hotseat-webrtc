@@ -11,3 +11,5 @@ On the Terminal -
 `grunt`
 
 You can browse the app at http://localhost:9001
+
+![Alt text](/app.png?raw=true "connect4-hotseat-webrtc")
