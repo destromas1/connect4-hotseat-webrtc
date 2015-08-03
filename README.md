@@ -10,6 +10,8 @@ On the Terminal -
 
 `grunt`
 
-You can browse the app at http://localhost:9001
+You can browse the app at `http://localhost:9001`
+
+Browse this URL in more than one Browser , and see the Real Time Gaming.
 
 ![Alt text](/app.png?raw=true "connect4-hotseat-webrtc")
