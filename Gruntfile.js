@@ -35,4 +35,13 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-karma');
 
     grunt.registerTask('default', ['connect', 'watch']);
+    
+    grunt.registerTask('test', ['karma']);
+    
+    
+    
+    
+    
+    
+    
 };

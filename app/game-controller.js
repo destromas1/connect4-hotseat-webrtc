@@ -1,8 +1,6 @@
 ﻿"use strict";
 
-var PEER_JS_API_KEY;
-
-PEER_JS_API_KEY = 'ft8poufp4eut0529';
+var PEER_JS_API_KEY = 'ft8poufp4eut0529';
 
 app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext', 'gameLogic', function ($scope,$firebaseArray, connectFourDataContext, gameLogic) {
     console.log('gameCtrl is running...');
@@ -32,7 +30,7 @@ app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext',
 
     var toggleCursorOfPlayer = function () {
         loadGameCursor(0);
-        $scope.currentPlayer = getNextPlayer();// $scope.currentPlayer === 1 ? $scope.playerType.Two : $scope.playerType.One;
+        $scope.currentPlayer = getNextPlayer();
         $scope.gameCursor[0] = new gameCursor(false, 0, $scope.currentPlayer);
     }
 
