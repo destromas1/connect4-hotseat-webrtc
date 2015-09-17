@@ -10,6 +10,9 @@ On the Terminal -
 
 `grunt`
 
+
+To test - `grunt karma`
+
 You can browse the app at `http://localhost:9001`
 
 Browse this URL in more than one Browser , and see the Real Time Gaming.
