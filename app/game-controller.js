@@ -1,6 +1,8 @@
 ﻿"use strict";
 
-var PEER_JS_API_KEY = 'ft8poufp4eut0529';
+var PEER_JS_API_KEY;
+
+PEER_JS_API_KEY = 'ft8poufp4eut0529';
 
 app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext', 'gameLogic', function ($scope,$firebaseArray, connectFourDataContext, gameLogic) {
     console.log('gameCtrl is running...');
