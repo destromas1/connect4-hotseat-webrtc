@@ -18,3 +18,4 @@ karma-chrome-launcher
 karma-jasmine
 .bin
 grunt
+node_modules

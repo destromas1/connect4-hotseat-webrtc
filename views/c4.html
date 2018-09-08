@@ -25,7 +25,8 @@
             <div class="col-xs-9">
                 <div class="bottom-buffer">
                     <div class="clearfix area-width">
-                        <div class="cursor-area" ng-mouseover="moveCursor(cursor)" ng-click="dropDiscToZone(cursor)" ng-repeat="cursor in gameCursor">
+                        <div class="cursor-area" ng-mouseover="moveCursor(cursor)" ng-click="dropDiscToZone(cursor)"
+                            ng-repeat="cursor in gameCursor">
                             <div style="vertical-align: middle">
                                 <div class="circleBase circle-red" ng-if="cursor.player === playerType.One"></div>
                                 <div class="circleBase circle-yellow" ng-if="cursor.player === playerType.Two"></div>

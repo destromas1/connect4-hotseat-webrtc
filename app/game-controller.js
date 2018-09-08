@@ -91,6 +91,7 @@ app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext',
         return i - 1;
     }
 
+    // https://console.firebase.google.com/u/1/project/connect4-bc0dd/database/connect4-bc0dd/data
     function moveAndPlaceDisk() {
         $scope.currentRow = availableFirstRow($scope.currentColumn, $scope.currentPlayer);
         $scope.gameZone[$scope.currentRow][$scope.currentColumn] = new gameZoneCell($scope.currentPlayer, $scope.currentRow, $scope.currentColumn);
@@ -204,9 +205,21 @@ app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext',
         debug: 0
     });
 
+    var config = {
+        apiKey: "AIzaSyBobZeUv-PofD8shmd0Qx8y9OtnAs7Ifcw",
+        authDomain: "connect4-bc0dd.firebaseapp.com",
+        databaseURL: "https://connect4-bc0dd.firebaseio.com",
+        projectId: "connect4-bc0dd",
+        storageBucket: "connect4-bc0dd.appspot.com",
+        messagingSenderId: "798183539694"
+      };
+      firebase.initializeApp(config);
 
-    var ref = new Firebase("https://c4.firebaseio.com/c4peer");
-    $scope.connectedUsers = $firebaseArray(ref);
+
+    // var ref = new Firebase("https://c4.firebaseio.com/c4peer");
+    // var ref = new Firebase("https://connect4-bc0dd.firebaseio.com/");
+    // $scope.connectedUsers = $firebaseArray(ref);
+    $scope.connectedUsers = [];
 
 
 
