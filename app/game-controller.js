@@ -201,29 +201,22 @@ app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext',
 
 
     $scope.peer = new Peer($scope.myId, {
-        key: PEER_JS_API_KEY,
+        // key: PEER_JS_API_KEY,
         debug: 0
     });
 
-    var config = {
-        apiKey: "AIzaSyBobZeUv-PofD8shmd0Qx8y9OtnAs7Ifcw",
-        authDomain: "connect4-bc0dd.firebaseapp.com",
-        databaseURL: "https://connect4-bc0dd.firebaseio.com",
-        projectId: "connect4-bc0dd",
-        storageBucket: "connect4-bc0dd.appspot.com",
-        messagingSenderId: "798183539694"
-      };
-      firebase.initializeApp(config);
 
 
     // var ref = new Firebase("https://c4.firebaseio.com/c4peer");
-    // var ref = new Firebase("https://connect4-bc0dd.firebaseio.com/");
-    // $scope.connectedUsers = $firebaseArray(ref);
-    $scope.connectedUsers = [];
 
+    var ref = firebase.database().ref().child("peers");
+    // create a synchronized array
+    // click on `index.html` above to see it used in the DOM!
+    $scope.connectedUsers = $firebaseArray(ref);
 
 
     $scope.peer.on('open', function (id) {
+        console.log("scope.peer.on('open'", id);
 
         $scope.connectedUsers.$add({ peerId: id });
 
@@ -234,6 +227,8 @@ app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext',
 
     $scope.peer.on('connection', function (conn) {
 
+        console.log("scope.peer.on('connection'", conn);
+
         return $scope.$apply(function () {
             setupPeerConnection(conn);
         });
@@ -241,6 +236,7 @@ app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext',
 
 
     $scope.peer.on('error', function (err) {
+        console.log("scope.peer.on('error", err);
     });
 
     var connectToAllPeers = function (gamers) {
@@ -312,8 +308,8 @@ app.controller('gameCtrl', ['$scope','$firebaseArray', 'connectFourDataContext',
     };
 
     window.onunload = window.onbeforeunload = function () {
+        console.log("onunload");
         return $scope.peer.destroy();
     };
-
 }]);
 
