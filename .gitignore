@@ -6,6 +6,8 @@ jquery
 localforage
 peerjs
 underscore
+/node_modules
+/bower_components
 angular
 angularfire
 angular-mocks
