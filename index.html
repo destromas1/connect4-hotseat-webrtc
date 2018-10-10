@@ -1,4 +1,5 @@
 ﻿<html ng-app="app">
+
 <head>
     <title>Connect Four</title>
     <base href="/">
@@ -8,6 +9,7 @@
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="styles/style.css" rel="stylesheet" />
 </head>
+
 <body>
     <div>
         <div ng-view></div>
@@ -19,9 +21,13 @@
     <script src="bower_components/angular-route/angular-route.min.js"></script>
     <script src="bower_components/underscore/underscore-min.js"></script>
     <script src="bower_components/localforage/dist/localforage.min.js"></script>
-    <script src="bower_components/firebase/firebase.js"></script>
+    <!-- <script src="bower_components/firebase/firebase.js"></script> -->
+
+    <script src="https://www.gstatic.com/firebasejs/3.6.6/firebase.js"></script>
     <script src="bower_components/angularfire/dist/angularfire.min.js"></script>
-    <script src="bower_components/peerjs/peer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/0.3.16/peer.min.js"></script>
+
+
 
     <script src="app/app.js"></script>
     <script src="app/connect-four-data-context.js"></script>
@@ -30,4 +36,5 @@
 
 
 </body>
+
 </html>
